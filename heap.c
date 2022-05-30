@@ -1,9 +1,11 @@
 #include "heap.h"
 #include <stddef.h>
+#include <stdlib.h>
 #define HIJO_IZQ 2*i+1
 #define HIJO_DER 2*i+2
 #define PADRE (i-1)/2
 #define TAM_INICIAL 64
+#define DOBLE 2
 
 struct heap {
     void **datos;
@@ -21,13 +23,21 @@ void swap(void* arreglo[], size_t a, size_t b) {
 void upheap (void* arreglo[], size_t i, cmp_func_t comparar) {
     if (!i) return;
     size_t j = PADRE;
-    if (comparar(j, i) <0) {
+    if (comparar(arreglo[j], arreglo[i]) <0) {
         swap(arreglo, i, j);
         upheap (arreglo, j, comparar);
     }
 }
 
-bool redimensionar(heap_t* heap);
+bool redimensionar(heap_t* heap) {
+    size_t capacidad = heap->tam*DOBLE;
+    void** datos = realloc(heap, sizeof(void*) * capacidad);
+
+    if (datos == NULL) return false;
+    heap->datos = datos;
+    heap->tam = capacidad;
+    return true;
+}
 
 heap_t *heap_crear(cmp_func_t cmp) {
     heap_t* heap = malloc(sizeof(heap_t));
