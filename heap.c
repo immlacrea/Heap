@@ -39,3 +39,15 @@ void heap_destruir(heap_t *heap, void (*destruir_elemento)(void *e)) {
     free(heap->datos);
     free(heap);
 }
+
+void *heap_ver_max(const heap_t *heap){
+    return heap->cant == 0 ? NULL : heap->datos[0];
+}
+
+bool heap_esta_vacio(const heap_t *heap){
+    return heap->cant == 0;
+}
+
+size_t heap_cantidad(const heap_t *heap){
+    return heap->cant;
+}
