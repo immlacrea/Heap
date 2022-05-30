@@ -56,7 +56,6 @@ void heap_destruir(heap_t *heap, void (*destruir_elemento)(void *e)) {
     free(heap);
 }
 
-<<<<<<< HEAD
 void *heap_ver_max(const heap_t *heap){
     return heap->cant == 0 ? NULL : heap->datos[0];
 }
@@ -77,5 +76,4 @@ bool heap_encolar(heap_t *heap, void *elem) {
     upheap(heap->datos, heap->cant, heap->cmp);
     heap->cant++;
     return true;
->>>>>>> encolar
 }
