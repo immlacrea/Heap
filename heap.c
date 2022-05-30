@@ -10,3 +10,15 @@ struct heap {
     size_t cant;
     cmp_func_t cmp;
 };
+
+bool heap_esta_vacio(const heap_t *heap){
+    return heap->cant == 0;
+}
+
+size_t heap_cantidad(const heap_t *heap){
+    return heap->cant;
+}
+
+void *heap_ver_max(const heap_t *heap){
+    return heap->cant == 0 ? NULL : heap->datos[0];
+}
