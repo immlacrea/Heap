@@ -67,7 +67,8 @@ bool heap_esta_vacio(const heap_t *heap){
 
 size_t heap_cantidad(const heap_t *heap){
     return heap->cant;
-=======
+}
+
 bool heap_encolar(heap_t *heap, void *elem) {
     if (heap->cant >= heap->tam/2) {
         if (!redimensionar(heap)) return false;
