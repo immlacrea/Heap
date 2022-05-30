@@ -12,6 +12,22 @@ struct heap {
     cmp_func_t cmp;
 };
 
+void swap(void* arreglo[], size_t a, size_t b) {
+    void* dato = arreglo[a];
+    arreglo[a] = arreglo[b];
+    arreglo[b] = dato;
+}
+
+void upheap (void* arreglo[], size_t i, cmp_func_t comparar) {
+    if (!i) return;
+    size_t j = PADRE;
+    if (comparar(j, i) <0) {
+        swap(arreglo, i, j);
+        upheap (arreglo, j, comparar);
+    }
+}
+
+bool redimensionar(heap_t* heap);
 
 heap_t *heap_crear(cmp_func_t cmp) {
     heap_t* heap = malloc(sizeof(heap_t));
@@ -40,6 +56,7 @@ void heap_destruir(heap_t *heap, void (*destruir_elemento)(void *e)) {
     free(heap);
 }
 
+<<<<<<< HEAD
 void *heap_ver_max(const heap_t *heap){
     return heap->cant == 0 ? NULL : heap->datos[0];
 }
@@ -50,4 +67,14 @@ bool heap_esta_vacio(const heap_t *heap){
 
 size_t heap_cantidad(const heap_t *heap){
     return heap->cant;
+=======
+bool heap_encolar(heap_t *heap, void *elem) {
+    if (heap->cant >= heap->tam/2) {
+        if (!redimensionar(heap)) return false;
+    }
+    heap->datos[heap->cant] = elem;
+    upheap(heap->datos, heap->cant, heap->cmp);
+    heap->cant++;
+    return true;
+>>>>>>> encolar
 }
