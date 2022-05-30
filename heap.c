@@ -3,6 +3,7 @@
 #define HIJO_IZQ 2*i+1
 #define HIJO_DER 2*i+2
 #define PADRE (i-1)/2
+#define TAM_INICIAL 64
 
 struct heap {
     void **datos;
@@ -16,14 +17,14 @@ heap_t *heap_crear(cmp_func_t cmp) {
     heap_t* heap = malloc(sizeof(heap_t));
     if (heap == NULL) return NULL;
 
-    void* datos = malloc(sizeof(void*) * 64);
+    void** datos = malloc(sizeof(void*) * TAM_INICIAL);
     if (datos==NULL) {
         free(heap);
         return NULL;
     }
     heap->datos = datos;
     heap->cant = 0;
-    heap->tam = 64;
+    heap->tam = TAM_INICIAL;
     heap->cmp = cmp;
 
     return heap;
