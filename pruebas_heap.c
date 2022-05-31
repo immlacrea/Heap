@@ -42,7 +42,7 @@ static void prueba_heap_vacio(void) {
 
     //Destruccion del heap
     heap_destruir(heap, NULL);
-    printf("El heap se destruyo con exito");
+    printf("El heap se destruyo con exito\n");
 }
 
 //Pruebas de encolar
@@ -59,9 +59,6 @@ static void prueba_encolar(void) {
     int d = 4;
     int e = 5;
 
-    //Agrego el elemento NULL
-    print_test("Se agrego el elemento NULL", heap_encolar(heap, NULL));
-    print_test("El maximo es NULL", heap_ver_max(heap) == NULL);
     //Agrego elementos al heap
     print_test("Se agrego el valor 1", heap_encolar(heap, &a));
     print_test("El maximo es 1", *(int*)heap_ver_max(heap) == a);
@@ -76,11 +73,11 @@ static void prueba_encolar(void) {
 
     //Comportamiento
     print_test("El heap no esta vacio", !heap_esta_vacio(heap));
-    print_test("Tiene cero elementos", heap_cantidad(heap)== 0);
+    print_test("Tiene 5 elementos", heap_cantidad(heap)== 5);
 
     //Destruyo el heap
     heap_destruir(heap, NULL);
-    printf("El heap se destruyo con exito");
+    printf("El heap se destruyo con exito\n");
 }
 /*
 //Pruebas de manejo de un gran volumen de datos
@@ -130,7 +127,7 @@ static void prueba_destruccion_con_free() {
 
     //Destruccion del heap
     heap_destruir(heap, free);
-    print_test("Se destruyo el heap con exito", true);
+    print_test("Se destruyo el heap con exito\n", true);
 }
 
 //Pruebas de destruccion de datos PILA
@@ -154,7 +151,7 @@ static void prueba_destruccion_con_pila() {
 
     //Destruccion del heap
     heap_destruir(heap, pila_destruir_wrapper);
-    print_test("Se destruyo el heap con exito", true);
+    print_test("Se destruyo el heap con exito\n", true);
 }
 
 void pruebas_heap_estudiante() {
@@ -165,3 +162,12 @@ void pruebas_heap_estudiante() {
     prueba_destruccion_con_free();
     prueba_destruccion_con_pila();
 }
+
+#ifndef CORRECTOR  // Para que no dé conflicto con el main() del corrector.
+
+int main(void) {
+    pruebas_heap_estudiante();
+    return failure_count() > 0;  // Indica si falló alguna prueba.
+}
+
+#endif
