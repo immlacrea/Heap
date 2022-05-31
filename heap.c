@@ -31,7 +31,7 @@ void upheap (void* arreglo[], size_t i, cmp_func_t comparar) {
 
 bool redimensionar(heap_t* heap) {
     size_t capacidad = heap->tam*DOBLE;
-    void** datos = realloc(heap, sizeof(void*) * capacidad);
+    void** datos = realloc(heap->datos, sizeof(void*) * capacidad);
 
     if (datos == NULL) return false;
     heap->datos = datos;

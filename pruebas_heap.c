@@ -79,13 +79,14 @@ static void prueba_encolar(void) {
     heap_destruir(heap, NULL);
     printf("El heap se destruyo con exito\n");
 }
-/*
+
 //Pruebas de manejo de un gran volumen de datos
 static void prueba_muchos_elementos() {
     printf("INICIO DE PRUEBAS DE VOLUMEN\n");
 
     //Creo el heap
     heap_t* heap = heap_crear(entero_mayor);
+    print_test("El heap se creo con exito", heap!=NULL);
 
     //Defino la cantidad de elementos a agregar
     size_t tam_max = 1000;
@@ -97,8 +98,8 @@ static void prueba_muchos_elementos() {
     bool ok2 = true;
     for (i=0; i<tam_max; i++) {
         vector[i] = i;
-        ok &= heap_enheapr(heap, &vector[i]);
-        ok2 &= (*(size_t*)heap_ver_primero(heap) == vector[0]);
+        ok &= heap_encolar(heap, &vector[i]);
+        ok2 &= (*(size_t*)heap_ver_max(heap) == vector[i]);
     }
     print_test("Todos los elementos se agregaron", ok);
     print_test("Se mantuvo el invariante del maximo", ok2);
@@ -106,7 +107,7 @@ static void prueba_muchos_elementos() {
     //Destruccion del heap
     heap_destruir(heap, NULL);
 }
-*/
+
 //Pruebas de destruccion de datos con funcion FREE
 static void prueba_destruccion_con_free() {
     printf("INICIO DE PRUEBAS CON FUNCION DE DESTRUCCION FREE\n");
@@ -158,7 +159,7 @@ void pruebas_heap_estudiante() {
     //Ejecuta las pruebas
     prueba_heap_vacio();
     prueba_encolar();
-//    prueba_muchos_elementos();
+    prueba_muchos_elementos();
     prueba_destruccion_con_free();
     prueba_destruccion_con_pila();
 }
