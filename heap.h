@@ -1,6 +1,8 @@
 #ifndef HEAP_H
 #define HEAP_H
 
+#include <stdio.h>    //printf (DEBUG)
+#include <stdlib.h>   // malloc
 #include <stdbool.h>  // bool
 #include <stddef.h>   // size_t
 
@@ -85,4 +87,9 @@ void *heap_desencolar(heap_t *heap);
 
 void pruebas_heap_estudiante(void);
 
+//debug
+void rellenar(heap_t* heap, int* a, size_t cant);
+void mostrarARR(heap_t* heap);
+void _downheap(heap_t* heap,size_t i);
+bool Existe(heap_t* heap, size_t pos);
 #endif  // HEAP_H
