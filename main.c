@@ -14,17 +14,7 @@ int comp ( const void* a, const void* b){
 
 //void pruebas_heap_catedra(void);
 void pruebas_heap_estudiante(void){
-    int arr[] = { 1, 5, 4 , 2, 3 };
-    heap_t* h = heap_crear(comp);
-    print_test("heap esta vacio", heap_esta_vacio(h));
-    rellenar(h, arr,5);
-    mostrarARR(h);
-    print_test("heap no esta vacio", !heap_esta_vacio(h));
-    printf("\n[DOWNHEAP]\n\n");
-    mostrarARR(h);
-    _downheap(h,0);
-    mostrarARR(h);
-    heap_destruir(h, NULL);
+    
 }
 //void pruebas_heap_volumen_catedra(size_t, bool);
 
