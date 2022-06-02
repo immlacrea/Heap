@@ -34,7 +34,7 @@ void mostrarARR(heap_t* heap){
 void swap(void* arreglo[], size_t a, size_t b){
     void* dato = arreglo[a];
     arreglo[a] = arreglo[b];
-    arreglo[b] = aux;
+    arreglo[b] = dato;
 }
 
 bool es_heap(heap_t* heap ,size_t p,  size_t izq, size_t der, bool e_der){
