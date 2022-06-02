@@ -14,3 +14,9 @@ run: all
 
 valgrind: all
 	valgrind $(VFLAGS) ./$(EXEC)
+<<<<<<< HEAD
+=======
+
+zipped:
+	zip abb.zip *.c *.h
+>>>>>>> downheap

@@ -1,6 +1,8 @@
 #ifndef HEAP_H
 #define HEAP_H
 
+#include <stdio.h>    //printf (DEBUG)
+#include <stdlib.h>   // malloc
 #include <stdbool.h>  // bool
 #include <stddef.h>   // size_t
 
