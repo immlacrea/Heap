@@ -6,6 +6,8 @@
 #define PADRE (i-1)/2
 #define TAM_INICIAL 64
 #define DOBLE 2
+#define REDUCIR_TAMANIO_OK ((heap->cant*4)<=heap->tam)&&((heap->tam/DOBLE)>=TAM_INICIAL)
+#define AUMENTAR_TAMANIO_OK (heap->cant >= heap->tam/2)
 
 void _downheap(heap_t* heap,size_t i);
 void _heapify(heap_t*heap);
@@ -38,16 +40,18 @@ void upheap (void* arreglo[], size_t i, cmp_func_t comparar) {
     }
 }
 
-bool redimensionar(heap_t* heap) {
-    size_t capacidad = heap->tam*DOBLE;
+bool redimensionar(heap_t* heap, size_t tam) {
+    size_t capacidad = heap->tam*tam;
     void** datos = realloc(heap->datos, sizeof(void*) * capacidad);
 
     if (datos == NULL) return false;
     heap->datos = datos;
     heap->tam = capacidad;
     return true;
+}
+
 void* heap_desencolar(heap_t* heap){
-    if(heap->cant == 0) return NULL;
+    if(heap->cant == 0 || (REDUCIR_TAMANIO_OK && !redimensionar(heap, 4)) ) return NULL;
     swap(heap->datos,0,heap->cant-1);
     void* dato = heap->datos[heap->cant-1];
     heap->cant--;
@@ -95,9 +99,7 @@ size_t heap_cantidad(const heap_t *heap){
 }
 
 bool heap_encolar(heap_t *heap, void *elem) {
-    if (heap->cant >= heap->tam/2) {
-        if (!redimensionar(heap)) return false;
-    }
+    if (AUMENTAR_TAMANIO_OK && ! redimensionar(heap, 2)) return false;
     heap->datos[heap->cant] = elem;
     upheap(heap->datos, heap->cant, heap->cmp);
     heap->cant++;
@@ -131,12 +133,6 @@ size_t maximo(heap_t* heap, size_t i, size_t d){
 
 bool Existe(heap_t* heap, size_t pos){
     return pos < heap->cant;
-}
-
-void swap(void* arreglo[], size_t a, size_t b){
-    void* dato = arreglo[a];
-    arreglo[a] = arreglo[b];
-    arreglo[b] = dato;
 }
 
 bool es_heap(heap_t* heap ,size_t p,  size_t izq, size_t der, bool e_der){

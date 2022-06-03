@@ -155,6 +155,48 @@ static void prueba_destruccion_con_pila() {
     print_test("Se destruyo el heap con exito\n", true);
 }
 
+void pruebas_heap_desencolar(){
+    printf("INICIO PRUEBAS HEAP DESENCOLAR\n");
+    heap_t* heap = heap_crear(entero_mayor);
+    int arr[] = {1,2,3,4,5};
+    bool ok = true;
+    for(int i=0; i<5; i++){
+        //encolo y verifico que el maximo sea el correcto
+        ok&= (heap_encolar(heap,&arr[i]) && arr[i] == *(int*)heap_ver_max(heap));
+    }
+    print_test("encolar todos los datos y verifico ver maximo correctos", ok);
+    for(int i=0; i<4; i++){
+        //desencolo y verifico maximos correctos
+        ok&= (arr[5-1-i] == *(int*)heap_desencolar(heap) && *(int*)heap_ver_max(heap) == arr[4-1-i]); 
+    }
+    ok &= arr[0] == *(int*)heap_desencolar(heap) && !heap_ver_max(heap);
+    print_test("desencolar todos los datos y verifico ver maximos correctos", ok);
+    print_test("el heap esta vacio y ver maximo es falso", heap_esta_vacio(heap) && !heap_ver_max(heap));
+    heap_destruir(heap,NULL);
+}
+
+void prueba_crear_arr(){
+    printf("INICIO CREAR ARRAY HEAP\n");
+    void* v[5];
+    int arr[] = {1,2,3,4,5};
+    int a = 9;
+    int b = 6;
+    int c = 8;
+    bool ok = true;
+    for(int i=0; i<5; i++) v[i] = &arr[i];
+    heap_t* heap = heap_crear_arr(v,5,entero_mayor);
+    print_test("se cargaron los datos en el heap", !heap_esta_vacio(heap));
+    print_test("el maximo es 5", 5 == *(int*)heap_ver_max(heap));
+    ok&= heap_encolar(heap,&a) && *(int*)heap_ver_max(heap) == a;
+    print_test("encolo 9 y el maximo es 9", ok);
+    ok&= heap_encolar(heap,&b) && *(int*)heap_ver_max(heap) != b && *(int*)heap_ver_max(heap) == a ;
+    print_test("encolo 6 y el maximo es 9", ok);
+    ok&= heap_encolar(heap,&c) && *(int*)heap_ver_max(heap) != c && *(int*)heap_ver_max(heap) == a ;
+    print_test("encolo 8 y el maximo es 9", ok);
+    heap_destruir(heap,NULL);
+    print_test("se destruyo el heap", ok);
+}
+
 void pruebas_heap_estudiante() {
     //Ejecuta las pruebas
     prueba_heap_vacio();
@@ -162,6 +204,8 @@ void pruebas_heap_estudiante() {
     prueba_muchos_elementos();
     prueba_destruccion_con_free();
     prueba_destruccion_con_pila();
+    pruebas_heap_desencolar();
+    prueba_crear_arr();
 }
 
 #ifndef CORRECTOR  // Para que no dé conflicto con el main() del corrector.
