@@ -117,7 +117,7 @@ heap_t *heap_crear_arr(void *arreglo[], size_t n, cmp_func_t cmp){
 
 void downheap(void* arr[], size_t cant, size_t i, cmp_func_t cmp){
     if( !(i < cant) || !(HIJO_IZQ < cant) || es_heap(arr,i,HIJO_IZQ, HIJO_DER, HIJO_DER < cant, cmp) ) return;
-    size_t pos = HIJO_DER < cant ? maximo(arr, HIJO_IZQ, HIJO_DER, cmp) : HIJO_DER;
+    size_t pos = HIJO_DER < cant ? maximo(arr, HIJO_IZQ, HIJO_DER, cmp) : HIJO_IZQ;
     swap(arr, pos, i);
     return downheap(arr, cant, pos, cmp);
 }
@@ -126,11 +126,21 @@ void heapify(void* arr[], size_t cant, cmp_func_t cmp){
     for(size_t i = 0; i < cant; i++) downheap(arr, cant , cant -1 -i, cmp );
 }
 
+void heap_sort(void *elementos[], size_t cant, cmp_func_t cmp){
+    heapify(elementos, cant, cmp);
+
+    for(int i=0; i<cant; i++){
+        if(cant-1-i == 0) break;
+        swap(elementos,0,cant-1-i);
+        downheap(elementos,cant-1-i,0,cmp);
+    }
+}
+
 size_t maximo(void* arr[], size_t i, size_t d, cmp_func_t cmp){
     return cmp(arr[i], arr[d]) >= 0 ? i : d; 
 }
 
 bool es_heap(void* arr[], size_t p, size_t izq, size_t der, bool e_der, cmp_func_t cmp){
-    return cmp(arr[p], arr[izq]) > 0 && (!e_der ? true : cmp(arr[p], arr[izq]) > 0); 
+    return cmp(arr[p], arr[izq]) > 0 && (!e_der ? true : cmp(arr[p], arr[der]) > 0); 
 }
 

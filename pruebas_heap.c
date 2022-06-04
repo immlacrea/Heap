@@ -197,6 +197,20 @@ void prueba_crear_arr(){
     print_test("se destruyo el heap", ok);
 }
 
+void prueba_heap_sort(){
+    printf("PRUEBA HEAPSORT\n");
+    int sufle[] =  { 2,7,1,4,3,9,8,5,6};
+    int solucion[] = { 1,2,3,4,5,6,7,8,9};
+    void* v[9];
+    for(int i=0; i<9; i++) v[i] = &sufle[i];
+    heap_sort(v,9,entero_mayor);
+    bool ok=true;
+    for(int i=0; i<9; i++){
+        ok&= (*(int*)v[i] == solucion[i] ); 
+    }
+    print_test("se acomodaron los elementos correctamente", ok);
+}
+
 void pruebas_heap_estudiante() {
     //Ejecuta las pruebas
     prueba_heap_vacio();
@@ -206,6 +220,7 @@ void pruebas_heap_estudiante() {
     prueba_destruccion_con_pila();
     pruebas_heap_desencolar();
     prueba_crear_arr();
+    prueba_heap_sort();
 }
 
 #ifndef CORRECTOR  // Para que no dé conflicto con el main() del corrector.
