@@ -9,12 +9,11 @@
 #define REDUCIR_TAMANIO_OK ((heap->cant*4)<=heap->tam)&&((heap->tam/DOBLE)>=TAM_INICIAL)
 #define AUMENTAR_TAMANIO_OK (heap->cant >= heap->tam/2)
 
-void _downheap(heap_t* heap,size_t i);
-void _heapify(heap_t*heap);
-size_t maximo(heap_t* heap, size_t i, size_t d);
-bool Existe(heap_t* heap, size_t pos);
+void downheap(void* arr[], size_t cant, size_t i, cmp_func_t cmp);
+void heapify(void* arr[], size_t cant, cmp_func_t cmp);
+size_t maximo(void* arr[], size_t i, size_t d, cmp_func_t cmp);
 void swap(void* arreglo[], size_t a, size_t b);
-bool es_heap(heap_t* heap ,size_t p,  size_t izq, size_t der, bool e_der);
+bool es_heap(void* arr[], size_t p, size_t izq, size_t der, bool e_der, cmp_func_t cmp);
 
 
 
@@ -55,7 +54,7 @@ void* heap_desencolar(heap_t* heap){
     swap(heap->datos,0,heap->cant-1);
     void* dato = heap->datos[heap->cant-1];
     heap->cant--;
-    _downheap(heap,0);
+    downheap(heap->datos,heap->cant,0,heap->cmp);
     return dato;
 }
 
@@ -110,32 +109,28 @@ heap_t *heap_crear_arr(void *arreglo[], size_t n, cmp_func_t cmp){
     if(!heap) return NULL;
     for(int i=0; i<n ; i++) heap->datos[i] = arreglo[i];
     heap->cant = n;
-    _heapify(heap);
+    heapify(heap->datos, heap->cant, heap->cmp);
     return heap;
 }
 
 /*utils*/
 
-void _downheap(heap_t* heap,size_t i){
-    if(!Existe(heap, i) || !Existe(heap,HIJO_IZQ) || es_heap(heap, i, HIJO_IZQ, HIJO_DER, Existe(heap, HIJO_DER) ) ) return;
-    size_t pos = Existe(heap, HIJO_DER) ? maximo(heap, HIJO_IZQ, HIJO_DER) : HIJO_IZQ ;
-    swap(heap->datos,pos,i);
-    return _downheap(heap, pos);
+void downheap(void* arr[], size_t cant, size_t i, cmp_func_t cmp){
+    if( !(i < cant) || !(HIJO_IZQ < cant) || es_heap(arr,i,HIJO_IZQ, HIJO_DER, HIJO_DER < cant, cmp) ) return;
+    size_t pos = HIJO_DER < cant ? maximo(arr, HIJO_IZQ, HIJO_DER, cmp) : HIJO_DER;
+    swap(arr, pos, i);
+    return downheap(arr, cant, pos, cmp);
 }
 
-void _heapify(heap_t*heap){
-    for(size_t i = 0; i < heap->cant; i++)_downheap(heap, heap->cant - 1 -i );
+void heapify(void* arr[], size_t cant, cmp_func_t cmp){
+    for(size_t i = 0; i < cant; i++) downheap(arr, cant , cant -1 -i, cmp );
 }
 
-size_t maximo(heap_t* heap, size_t i, size_t d){
-    return heap->cmp(heap->datos[i], heap->datos[d]) >= 0 ? i : d; 
+size_t maximo(void* arr[], size_t i, size_t d, cmp_func_t cmp){
+    return cmp(arr[i], arr[d]) >= 0 ? i : d; 
 }
 
-bool Existe(heap_t* heap, size_t pos){
-    return pos < heap->cant;
-}
-
-bool es_heap(heap_t* heap ,size_t p,  size_t izq, size_t der, bool e_der){
-    return heap->cmp(heap->datos[p], heap->datos[izq]) > 0 && (!e_der ? true : heap->cmp(heap->datos[p], heap->datos[izq]) > 0);
+bool es_heap(void* arr[], size_t p, size_t izq, size_t der, bool e_der, cmp_func_t cmp){
+    return cmp(arr[p], arr[izq]) > 0 && (!e_der ? true : cmp(arr[p], arr[izq]) > 0); 
 }
 
