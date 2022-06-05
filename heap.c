@@ -39,8 +39,8 @@ void upheap (void* arreglo[], size_t i, cmp_func_t comparar) {
     }
 }
 
-bool redimensionar(heap_t* heap, size_t tam) {
-    size_t capacidad = heap->tam*tam;
+bool redimensionar(heap_t* heap, size_t tam, bool achicar) {
+    size_t capacidad = achicar? heap->tam / 2 : heap->tam*2;
     void** datos = realloc(heap->datos, sizeof(void*) * capacidad);
 
     if (datos == NULL) return false;
@@ -50,7 +50,7 @@ bool redimensionar(heap_t* heap, size_t tam) {
 }
 
 void* heap_desencolar(heap_t* heap){
-    if(heap->cant == 0 || (REDUCIR_TAMANIO_OK && !redimensionar(heap, 4)) ) return NULL;
+    if(heap->cant == 0 || (REDUCIR_TAMANIO_OK && !redimensionar(heap, 2, true)) ) return NULL;
     swap(heap->datos,0,heap->cant-1);
     void* dato = heap->datos[heap->cant-1];
     heap->cant--;
@@ -98,7 +98,7 @@ size_t heap_cantidad(const heap_t *heap){
 }
 
 bool heap_encolar(heap_t *heap, void *elem) {
-    if (AUMENTAR_TAMANIO_OK && ! redimensionar(heap, 2)) return false;
+    if (AUMENTAR_TAMANIO_OK && ! redimensionar(heap, 2, false)) return false;
     heap->datos[heap->cant] = elem;
     upheap(heap->datos, heap->cant, heap->cmp);
     heap->cant++;
@@ -119,7 +119,7 @@ void downheap(void* arr[], size_t cant, size_t i, cmp_func_t cmp){
     if( !(i < cant) || !(HIJO_IZQ < cant) || es_heap(arr,i,HIJO_IZQ, HIJO_DER, HIJO_DER < cant, cmp) ) return;
     size_t pos = HIJO_DER < cant ? maximo(arr, HIJO_IZQ, HIJO_DER, cmp) : HIJO_IZQ;
     swap(arr, pos, i);
-    return downheap(arr, cant, pos, cmp);
+    downheap(arr, cant, pos, cmp);
 }
 
 void heapify(void* arr[], size_t cant, cmp_func_t cmp){

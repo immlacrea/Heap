@@ -120,6 +120,10 @@ static void prueba_destruccion_con_free() {
     int* puntero2 = malloc(sizeof(int));
     int* puntero3 = malloc(sizeof(int));
 
+    *puntero1 = 1;
+    *puntero2 = 2;
+    *puntero3 = 3;
+
     //Agregar los datos al heap
     heap_encolar(heap, puntero1);
     heap_encolar(heap, puntero2);

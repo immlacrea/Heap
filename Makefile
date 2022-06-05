@@ -14,3 +14,6 @@ run: all
 
 valgrind: all
 	valgrind $(VFLAGS) ./$(EXEC)
+
+zip:
+	zip heap.zip *.c *.h Makefile
